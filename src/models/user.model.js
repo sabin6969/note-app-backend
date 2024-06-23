@@ -1,5 +1,6 @@
 import mongoose, {Schema} from "mongoose";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const userSchema = new Schema(
     {
@@ -19,6 +20,11 @@ const userSchema = new Schema(
         password:{
             type: String,
             required: [true,"Password field is required"],
+        },
+        refreshToken:{
+            // refresh token field is automatically generated from backend to create a session
+            type: String,
+            required: false,
         }
     },
     {timestamps: true}
@@ -32,5 +38,34 @@ userSchema.pre("save",async function(){
         this.password = encryptedPassword;
     }
 });
+
+userSchema.methods.generateAccessToken = function(){
+    const accessToken =  jwt.sign(
+        {
+            _id: this._id,
+            email: this.email,
+            fullName: this.fullName,
+        },
+        process.env.ACCESS_TOKEN_SECRET,
+        {
+            expiresIn: process.env.ACCESS_TOKEN_EXPIRY
+        }
+    );
+    return accessToken;
+};
+
+
+userSchema.methods.generateRefreshToken = function(){
+    const refreshToken = jwt.sign(
+        {
+            _id: this._id,
+        },
+        process.env.REFRESH_TOKEN_SECRET,
+        {
+            expiresIn: process.env.REFRESH_TOKEN_EXPIRY
+        }
+    );
+    return refreshToken;
+};
 
 export const User = mongoose.model("User",userSchema);
