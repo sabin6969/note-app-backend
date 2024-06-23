@@ -92,10 +92,10 @@ const updateNote = asyncHandler(async(req,res)=>{
 
 const getAllNotes = asyncHandler(async(req,res)=>{
     const userId = req.user._id;
-    const notes = await Note.find({owner: userId}).populate("owner","fullName email").select("-owner");
+    const notes = await Note.find({owner: userId}).select("-owner");
     res
     .status(200)
-    .json(new ApiResponse(200,"Notes fetched sucessfully",notes));
+    .json(new ApiResponse(200,"Notes fetched sucessfully",true,notes));
 })
 
 export {
