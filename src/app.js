@@ -1,6 +1,7 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/user.route.js";
+import noteRouter from "./routes/note.route.js";
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(express.static("public/temp"));
 
 // routes
 app.use("/api/v1/user",userRouter);
+app.use("/api/v1/note",noteRouter);
 
 
 export default app;

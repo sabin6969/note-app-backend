@@ -5,7 +5,7 @@ const authMiddleware = (req,res,next)=>{
     // accessing access token from cookie (for web) and from headers (if mobile app)
     const accessToken = req?.cookies?.accessToken || req.headers?.authorization?.split("Bearer ")?.[1];
     if(!accessToken){
-        res.status(401).json(new ApiResponse(401,"Unauthorized access",false))
+        res.status(401).json(new ApiResponse(401,"Unauthorized access! please login first",false))
     }
     else{
         try {
