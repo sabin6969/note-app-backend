@@ -22,7 +22,12 @@ const userSchema = new Schema(
             required: [true,"Password field is required"],
         },
         refreshToken:{
-            // refresh token field is automatically generated from backend to create a session
+            // refresh token field is automatically generated from backend to create a session and to be stored in server or database
+            type: String,
+            required: false,
+        },
+        accessToken:{
+            // this is token meant to sent through frontend not to be stored in server or database
             type: String,
             required: false,
         }
@@ -67,5 +72,12 @@ userSchema.methods.generateRefreshToken = function(){
     );
     return refreshToken;
 };
+
+
+userSchema.methods.comparePassword = async function(userEnteredPassword){
+    // comparing user entered password and the encrypted password which is stored in database
+    return await bcrypt.compare(userEnteredPassword,this.password);
+}
+
 
 export const User = mongoose.model("User",userSchema);
