@@ -21,13 +21,18 @@ const createAccount = asyncHandler(async(req,res)=>{
             }
             else{
                 const profileCloudinaryUrl = await uploadOnCloudinary(profileImagePath);
-                const user = await User.create({
-                    email:email,
-                    password:password,
-                    fullName: fullName,
-                    profileImageUrl: profileCloudinaryUrl,
-                });
-                res.status(201).json(new ApiResponse(201,"Account created sucessfully proceed towards login",true,user));
+                if(!profileCloudinaryUrl){
+                    res.status(500).json(new ApiResponse(500,"Something went wrong while uploading image try again",false));
+                }
+                else{
+                    const user = await User.create({
+                        email:email,
+                        password:password,
+                        fullName: fullName,
+                        profileImageUrl: profileCloudinaryUrl,
+                    });
+                    res.status(201).json(new ApiResponse(201,"Account created sucessfully proceed towards login",true,user));
+                }
             }
         }
     }

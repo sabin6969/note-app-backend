@@ -1,4 +1,5 @@
 import mongoose, {Schema} from "mongoose";
+import bcrypt from "bcrypt";
 
 const userSchema = new Schema(
     {
@@ -24,8 +25,12 @@ const userSchema = new Schema(
 );
 
 
-userSchema.pre("save",function(){
-   //TODO: encrypt the password before saving into database
+userSchema.pre("save",async function(){
+    // encrypt the password only if password is modified otherwise there is no sense of encrypting password when other fields or property changes
+    if(this.isModified("password")){
+        const encryptedPassword = await bcrypt.hash(this.password,10);
+        this.password = encryptedPassword;
+    }
 });
 
 export const User = mongoose.model("User",userSchema);
