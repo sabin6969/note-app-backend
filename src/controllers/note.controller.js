@@ -33,7 +33,7 @@ const deleteNote = asyncHandler(async(req,res)=>{
         // The noteId provided by us is in the format of string but findById requires it to be in its own format like an object 
         // Stackoverflow reference
         // https://stackoverflow.com/questions/14940660/whats-mongoose-error-cast-to-objectid-failed-for-value-xxx-at-path-id#:~:text=It%20can%20be%20corrected%20by%20making%20path%20of%20both%20routes%20different.&text=I%20went%20with%20an%20adaptation,casting%20as%20a%20validation%20method.&text=Always%20use%20mongoose.,Types.
-        
+
         res.status(400).json(new ApiResponse(400,"Note id is invalid"))
     }
     else{
@@ -90,8 +90,17 @@ const updateNote = asyncHandler(async(req,res)=>{
     }
 });
 
+const getAllNotes = asyncHandler(async(req,res)=>{
+    const userId = req.user._id;
+    const notes = await Note.find({owner: userId}).populate("owner","fullName email").select("-owner");
+    res
+    .status(200)
+    .json(new ApiResponse(200,"Notes fetched sucessfully",notes));
+})
+
 export {
     createNote,
     deleteNote,
     updateNote,
+    getAllNotes,
 }
