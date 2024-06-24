@@ -55,8 +55,10 @@ const login = asyncHandler(async(req,res)=>{
                 res.status(401).json(new ApiResponse(401,"Provided password is incorrect",false));
             }
             else{
-                user.refreshToken = user.generateRefreshToken();
-                user.accessToken = user.generateAccessToken();
+                const refreshToken = user.generateRefreshToken();
+                user.refreshToken = refreshToken;
+                const accessToken = user.generateAccessToken();
+                user.accessToken = accessToken;
                 await user.save();
                 user = await User.findById(user._id).select("-password");
                 res.status(200)
