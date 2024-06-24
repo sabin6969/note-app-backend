@@ -62,7 +62,7 @@ const login = asyncHandler(async(req,res)=>{
                 res.status(200)
                 .cookie("refreshToken",refreshToken,COOKIE_OPTIONS)
                 .cookie("accessToken",accessToken,COOKIE_OPTIONS)
-                .json(new ApiResponse(201,"Login Sucess",true,user));
+                .json(new ApiResponse(200,"Login Sucess",true,user));
             }
         }
     }
