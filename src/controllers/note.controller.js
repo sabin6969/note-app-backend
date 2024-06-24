@@ -21,7 +21,7 @@ const createNote = asyncHandler(async(req,res)=>{
             }
         );
         res
-        .status(200)
+        .status(201)
         .json(new ApiResponse(200,"Note created sucessfully",true,note));
     }
 });
