@@ -55,11 +55,9 @@ const login = asyncHandler(async(req,res)=>{
                 res.status(401).json(new ApiResponse(401,"Provided password is incorrect",false));
             }
             else{
-                const refreshToken = user.generateRefreshToken();
-                user.refreshToken = refreshToken;
+                user.refreshToken = user.generateRefreshToken();
+                user.accessToken = user.generateAccessToken();
                 await user.save();
-                const accessToken = user.generateAccessToken();
-                user.accessToken = accessToken;
                 user = await User.findById(user._id).select("-password");
                 res.status(200)
                 .cookie("refreshToken",refreshToken,COOKIE_OPTIONS)
