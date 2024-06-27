@@ -10,8 +10,6 @@ This repository contains the backend for a Note App, built with Express.js, Mong
 - [Environment Variables](#environment-variables)
 - [API Documentation](#api-documentation)
 - [Deployment](#deployment)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Features
 
@@ -102,7 +100,7 @@ POST /api/v1/user/login
 - **Request Body**:
   ```json
   {
-    "username": "yourusername",
+    "email": "youremail",
     "password": "yourpassword"
   }
   ```
@@ -127,11 +125,9 @@ POST /api/v1/user/logout
 POST /api/v1/auth/verifyAccesstoken
 ```
 
-- **Request Body**:
-  ```json
-  {
-    "token": "jwt_token"
-  }
+- **Headers**:
+  ```plaintext
+  Authorization: Bearer jwt_token
   ```
 
 ### Notes
@@ -181,8 +177,8 @@ PATCH /api/v1/note/updateNote/:noteId
 - **Request Body**:
   ```json
   {
-    "title": "new_title",
-    "content": "new_content"
+    "noteTitle": "new_title",
+    "noteDescription": "new_content"
   }
   ```
 
