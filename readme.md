@@ -9,7 +9,6 @@ This repository contains the backend for a Note App, built with Express.js, Mong
 - [Getting Started](#getting-started)
 - [Environment Variables](#environment-variables)
 - [API Documentation](#api-documentation)
-- [Deployment](#deployment)
 
 ## Features
 
