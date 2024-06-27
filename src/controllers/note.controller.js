@@ -28,13 +28,13 @@ const createNote = asyncHandler(async(req,res)=>{
 
 const deleteNote = asyncHandler(async(req,res)=>{
     const noteId = req?.params?.noteId;
-    if (noteId.match(/^[0-9a-fA-F]{24}$/)) {
+    if (!noteId.match(/^[0-9a-fA-F]{24}$/)) {
         // Yes, it's a valid ObjectId, proceed with `findById` call.
         // The noteId provided by us is in the format of string but findById requires it to be in its own format like an object 
         // Stackoverflow reference
         // https://stackoverflow.com/questions/14940660/whats-mongoose-error-cast-to-objectid-failed-for-value-xxx-at-path-id#:~:text=It%20can%20be%20corrected%20by%20making%20path%20of%20both%20routes%20different.&text=I%20went%20with%20an%20adaptation,casting%20as%20a%20validation%20method.&text=Always%20use%20mongoose.,Types.
 
-        res.status(400).json(new ApiResponse(400,"Note id is invalid"))
+        res.status(400).json(new ApiResponse(400,"Note id is invalid",false))
     }
     else{
         const note = await Note.findById(noteId);
@@ -47,7 +47,7 @@ const deleteNote = asyncHandler(async(req,res)=>{
             res.status(200).json(new ApiResponse(200,"Note deleted",true))
         }
         else{
-            res.status(403).json(new ApiResponse(403,"Forbidden to perform this operation"))
+            res.status(403).json(new ApiResponse(403,"Forbidden to perform this operation",false))
         }
     }
     }
